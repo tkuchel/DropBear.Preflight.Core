@@ -4,40 +4,70 @@ namespace DropBear.Preflight.Core;
 
 public class PreflightManager
 {
-    // A list of tasks to be executed
-    private readonly List<PreflightTask> _tasks;
-
     // Configuration options
     private readonly PreflightManagerConfig _config;
 
     // Logger
     private readonly ILogger<PreflightManager> _logger;
 
+    // A list of tasks to be executed
+    private readonly List<PreflightTask> _tasks;
+
+    public PreflightManager(PreflightManagerConfig config, ILogger<PreflightManager> logger)
+    {
+        _config = config;
+        _logger = logger;
+        _tasks = new List<PreflightTask>();
+    }
+
     // Event for task completion
     public event EventHandler<TaskCompletionEventArgs>? TaskCompleted;
 
     // Event for overall progress
     public event EventHandler<ProgressEventArgs>? OverallProgress;
-
-    public PreflightManager(PreflightManagerConfig config, ILogger<PreflightManager> logger)
+    
+    // Add a task to the list of tasks
+    public void AddTask(PreflightTask task)
     {
-        this._config = config;
-        this._logger = logger;
-        _tasks = new List<PreflightTask>();
+        _tasks.Add(task);
     }
 
-    // Other methods...
-
-    // Method to start executing tasks
+    // Start executing the tasks
     public async Task StartAsync()
     {
         // Sort tasks based on priority
         _tasks.Sort((t1, t2) => t1.Priority.CompareTo(t2.Priority));
 
-        var completedTasks = 0;
+        var executingTasks = new HashSet<PreflightTask>();
 
-        foreach (var task in _tasks.Where(task => task.Dependencies.All(d => d.IsCompleted)))
+        foreach (var task in _tasks)
+            try
+            {
+                await ExecuteTaskWithDependenciesAsync(task, executingTasks);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error executing task {task.GetType().Name}");
+                if (_config.StopOnFailure) throw;
+            }
+    }
+
+    // Execute a task and all of its dependencies
+    private async Task ExecuteTaskWithDependenciesAsync(PreflightTask task, HashSet<PreflightTask> executingTasks)
+    {
+        // Check for circular dependencies
+        if (!executingTasks.Add(task))
         {
+            _logger.LogError($"Circular dependency detected for task {task.GetType().Name}");
+            throw new InvalidOperationException($"Circular dependency detected for task {task.GetType().Name}");
+        }
+
+        // Execute all dependencies first
+        foreach (var dependency in task.Dependencies)
+            await ExecuteTaskWithDependenciesAsync(dependency, executingTasks);
+
+        // Only execute the task if it hasn't been completed yet
+        if (!task.IsCompleted)
             try
             {
                 // Log the start of the task
@@ -54,10 +84,6 @@ public class PreflightManager
 
                 // Raise the TaskCompleted event
                 TaskCompleted?.Invoke(this, new TaskCompletionEventArgs(task, true, null));
-
-                // Update the number of completed tasks and raise the OverallProgress event
-                completedTasks++;
-                OverallProgress?.Invoke(this, new ProgressEventArgs((double)completedTasks / _tasks.Count));
             }
             catch (Exception ex)
             {
@@ -66,15 +92,17 @@ public class PreflightManager
 
                 // Handle task failure based on the configuration
                 if (_config.StopOnFailure)
-                {
                     throw;
-                }
-                else
-                {
-                    // Raise the TaskCompleted event with the exception
-                    TaskCompleted?.Invoke(this, new TaskCompletionEventArgs(task, false, ex));
-                }
+                // Raise the TaskCompleted event with the exception
+                TaskCompleted?.Invoke(this, new TaskCompletionEventArgs(task, false, ex));
             }
-        }
+
+        // Calculate the overall progress and raise the OverallProgress event
+        var completedTasks = _tasks.Count(t => t.IsCompleted);
+        OverallProgress?.Invoke(this, new ProgressEventArgs((double)completedTasks / _tasks.Count));
+
+        // Remove the task from the executing tasks
+        executingTasks.Remove(task);
     }
 }
+
