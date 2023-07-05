@@ -9,8 +9,9 @@
     <Title>DropBear Preflight Manager</Title>
     <Description>A simple preflight manager, that can be given tasks to complete on startup.</Description>
     <Copyright>Terrence Kuchel (DropBear) 2023</Copyright>
+    <Authors>Terrence Kuchel aka DropBear</Authors>
     <RepositoryUrl>https://github.com/tkuchel/DropBear.Preflight.Core</RepositoryUrl>
-    <PackageTags>c#, cache, cache manager, simple cache</PackageTags>
+    <PackageTags>c#, preflight, preflight manager, simple preflight</PackageTags>
     <PackageReleaseNotes>Released under MIT license.</PackageReleaseNotes>
     <PackageProjectUrl>
       https://github.com/tkuchel/DropBear.Preflight.Core/tree/main/DropBear.Preflight.Core</PackageProjectUrl>
