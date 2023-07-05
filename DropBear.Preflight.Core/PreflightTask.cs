@@ -1,22 +1,36 @@
 ﻿namespace DropBear.Preflight.Core;
 
+/// <summary>
+/// Represents a task to be executed during the preflight phase.
+/// </summary>
 public abstract class PreflightTask
 {
-    // The priority of the task
+    /// <summary>
+    /// Gets or sets the priority of the task.
+    /// </summary>
     public int Priority { get; set; } = 0;
 
-    // The list of tasks that this task depends on
+    /// <summary>
+    /// Gets the list of tasks that this task depends on.
+    /// </summary>
     public List<PreflightTask> Dependencies { get; set; } = new List<PreflightTask>();
 
-    // A flag indicating whether the task has completed
+    /// <summary>
+    /// Gets a value indicating whether the task has completed.
+    /// </summary>
     public bool IsCompleted { get; private set; } = false;
 
-    // The method to execute the task
+    /// <summary>
+    /// Executes the task.
+    /// </summary>
     public abstract Task ExecuteAsync(CancellationToken cancellationToken);
 
-    // A method to mark the task as completed
+    /// <summary>
+    /// Marks the task as completed.
+    /// </summary>
     protected void MarkAsCompleted()
     {
         IsCompleted = true;
     }
 }
+

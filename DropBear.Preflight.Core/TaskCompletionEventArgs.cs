@@ -1,17 +1,26 @@
 ﻿namespace DropBear.Preflight.Core;
 
+/// <summary>
+/// Provides data for the TaskCompleted event.
+/// </summary>
 public class TaskCompletionEventArgs : EventArgs
 {
-    // The task that has completed
+    /// <summary>
+    /// Gets the task that has completed.
+    /// </summary>
     public PreflightTask Task { get; }
 
-    // A flag indicating whether the task completed successfully
+    /// <summary>
+    /// Gets a value indicating whether the task completed successfully.
+    /// </summary>
     public bool IsSuccessful { get; }
 
-    // The exception that was thrown, if any
-    public Exception? Error { get; }
+    /// <summary>
+    /// Gets the exception that was thrown, if any.
+    /// </summary>
+    public Exception Error { get; }
 
-    public TaskCompletionEventArgs(PreflightTask task, bool isSuccessful, Exception? error)
+    public TaskCompletionEventArgs(PreflightTask task, bool isSuccessful, Exception error)
     {
         Task = task;
         IsSuccessful = isSuccessful;

@@ -1,7 +1,9 @@
 ﻿using Microsoft.Extensions.Logging;
 
 namespace DropBear.Preflight.Core;
-
+/// <summary>
+/// Manages the execution of preflight tasks.
+/// </summary>
 public class PreflightManager
 {
     // Configuration options
@@ -20,19 +22,27 @@ public class PreflightManager
         _tasks = new List<PreflightTask>();
     }
 
-    // Event for task completion
+    /// <summary>
+    /// Occurs when a task has completed.
+    /// </summary>
     public event EventHandler<TaskCompletionEventArgs>? TaskCompleted;
 
-    // Event for overall progress
+    /// <summary>
+    /// Occurs when the overall progress has changed.
+    /// </summary>
     public event EventHandler<ProgressEventArgs>? OverallProgress;
-    
-    // Add a task to the list of tasks
+
+    /// <summary>
+    /// Adds a task tothe list of tasks to be executed.
+    /// </summary>
     public void AddTask(PreflightTask task)
     {
         _tasks.Add(task);
     }
 
-    // Start executing the tasks
+    /// <summary>
+    /// Starts the execution of tasks.
+    /// </summary>
     public async Task StartAsync()
     {
         // Sort tasks based on priority
@@ -52,7 +62,9 @@ public class PreflightManager
             }
     }
 
-    // Execute a task and all of its dependencies
+    /// <summary>
+    /// Executes a task and its dependencies.
+    /// </summary>
     private async Task ExecuteTaskWithDependenciesAsync(PreflightTask task, HashSet<PreflightTask> executingTasks)
     {
         // Check for circular dependencies

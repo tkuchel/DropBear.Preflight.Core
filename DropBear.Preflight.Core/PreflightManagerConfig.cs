@@ -1,16 +1,27 @@
 ﻿namespace DropBear.Preflight.Core;
 
+/// <summary>
+/// Represents the configuration options for the PreflightManager.
+/// </summary>
 public class PreflightManagerConfig
 {
-    // Should the manager stop executing tasks if a task fails?
+    /// <summary>
+    /// Gets or sets a value indicating whether the manager should stop executing tasks if a task fails.
+    /// </summary>
     public bool StopOnFailure { get; set; } = false;
 
-    // The timeout for each task
+    /// <summary>
+    /// Gets or sets the timeout for each task.
+    /// </summary>
     public TimeSpan TaskTimeout { get; set; } = TimeSpan.FromMinutes(1);
 
-    // The maximum number of tasks that can run concurrently
+    /// <summary>
+    /// Gets or sets the maximum number of tasks that can run concurrently.
+    /// </summary>
     public int MaxConcurrentTasks { get; set; } = 1;
 
-    // The number of times to retry a task if it fails
+    /// <summary>
+    /// Gets or sets the number of times to retry a task if it fails.
+    /// </summary>
     public int RetryCount { get; set; } = 0;
 }

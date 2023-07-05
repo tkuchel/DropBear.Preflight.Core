@@ -3,3 +3,8 @@ obj/
 /packages/
 riderModule.iml
 /_ReSharper.Caches/
+.idea/.idea.DropBear.Preflight.Core/.idea/.gitignore
+.idea/.idea.DropBear.Preflight.Core/.idea/encodings.xml
+.idea/.idea.DropBear.Preflight.Core/.idea/indexLayout.xml
+.idea/.idea.DropBear.Preflight.Core/.idea/vcs.xml
+.vscode/settings.json
