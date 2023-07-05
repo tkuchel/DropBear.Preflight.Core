@@ -13,13 +13,13 @@ public static class ServiceCollectionExtensions
     /// <param name="services">The service collection to add the PreflightManager to.</param>
     /// <param name="configure">A delegate to configure the PreflightManagerConfig.</param>
     /// <returns>The same service collection so that multiple calls can be chained.</returns>
-    public static IServiceCollection AddPreflightManager(this IServiceCollection services, Action<PreflightManagerConfig> configure)
+    public static IServiceCollection AddPreflightCore(this IServiceCollection services, Action<PreflightManagerConfig> configure)
     {
         // Register the PreflightManagerConfig with the specified configuration
         services.Configure(configure);
 
         // Register the PreflightManager as a singleton
-        services.AddSingleton<PreflightManager>();
+        services.AddSingleton<IPreflightManager, PreflightManager>();
 
         return services;
     }

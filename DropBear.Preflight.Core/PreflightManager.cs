@@ -4,7 +4,7 @@ namespace DropBear.Preflight.Core;
 /// <summary>
 /// Manages the execution of preflight tasks.
 /// </summary>
-public class PreflightManager
+public class PreflightManager : IPreflightManager
 {
     // Configuration options
     private readonly PreflightManagerConfig _config;
