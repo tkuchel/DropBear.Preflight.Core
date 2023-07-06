@@ -37,9 +37,9 @@ public class PreflightManager : IPreflightManager
     /// </summary>
     public event EventHandler<TaskCompletionEventArgs> TaskFailed;
 
-
+    
     /// <summary>
-    /// Adds a task tothe list of tasks to be executed.
+    /// Adds a task to the list of tasks to be executed.
     /// </summary>
     public void AddTask(PreflightTask task)
     {
