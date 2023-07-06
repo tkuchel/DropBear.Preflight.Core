@@ -32,5 +32,26 @@ public abstract class PreflightTask
     {
         IsCompleted = true;
     }
+    /// <summary>
+    /// Gets a value indicating whether the task has failed.
+    /// </summary>
+    public bool HasFailed { get; private set; } = false;
+
+    /// <summary>
+    /// Gets the exception that caused the task to fail, if any.
+    /// </summary>
+    public Exception FailureException { get; private set; }
+
+    // Other methods...
+
+    /// <summary>
+    /// Marks the task as failed and stores the exception that caused the failure.
+    /// </summary>
+    /// <param name="ex">The exception that caused the task to fail.</param>
+    protected void MarkAsFailed(Exception ex)
+    {
+        HasFailed = true;
+        FailureException = ex;
+    }
 }
 
