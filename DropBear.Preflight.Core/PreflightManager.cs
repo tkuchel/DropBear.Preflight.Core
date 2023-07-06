@@ -31,6 +31,12 @@ public class PreflightManager : IPreflightManager
     /// Occurs when the overall progress has changed.
     /// </summary>
     public event EventHandler<ProgressEventArgs>? OverallProgress;
+    
+    /// <summary>
+    /// Occurs when a task has failed.
+    /// </summary>
+    public event EventHandler<TaskCompletionEventArgs> TaskFailed;
+
 
     /// <summary>
     /// Adds a task tothe list of tasks to be executed.
@@ -102,11 +108,17 @@ public class PreflightManager : IPreflightManager
                 // Log the error
                 _logger.LogError(ex, $"Error executing task {task.GetType().Name}");
 
+                // Mark the task as failed
+                //task.MarkAsFailed(ex);
+
+                // Raise the TaskFailed event
+                TaskFailed?.Invoke(this, new TaskCompletionEventArgs(task, false, ex));
+
                 // Handle task failure based on the configuration
                 if (_config.StopOnFailure)
+                {
                     throw;
-                // Raise the TaskCompleted event with the exception
-                TaskCompleted?.Invoke(this, new TaskCompletionEventArgs(task, false, ex));
+                }
             }
 
         // Calculate the overall progress and raise the OverallProgress event

@@ -6,6 +6,11 @@
 public abstract class PreflightTask
 {
     /// <summary>
+    ///  Gets or sets the name of the task.
+    /// </summary>
+    public string Name { get; set; } = string.Empty;
+    
+    /// <summary>
     /// Gets or sets the priority of the task.
     /// </summary>
     public int Priority { get; set; } = 0;
