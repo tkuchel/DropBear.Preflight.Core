@@ -25,6 +25,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     
+    - name: Branch name
+      run: echo running on branch ${GITHUB_REF##*/}
+        
     - name: Get Build Version
       run: |
         Import-Module .\build\GetBuildVersion.psm1
