@@ -5,10 +5,7 @@ Preflight.Core is a .NET library that provides an easy-to-use preflight manager.
 ## Features
 
 - Simple API for adding tasks to the preflight manager.
--
--
--
--
+
 
 ## Installation
 
