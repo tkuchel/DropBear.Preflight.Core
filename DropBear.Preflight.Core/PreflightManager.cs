@@ -35,7 +35,7 @@ public class PreflightManager : IPreflightManager
     /// <summary>
     /// Occurs when a task has failed.
     /// </summary>
-    public event EventHandler<TaskCompletionEventArgs> TaskFailed;
+    public event EventHandler<TaskCompletionEventArgs>? TaskFailed;
 
     
     /// <summary>
