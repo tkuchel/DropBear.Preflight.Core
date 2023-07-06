@@ -16,6 +16,11 @@ namespace DropBear.Preflight.Core
         event EventHandler<ProgressEventArgs> OverallProgress;
 
         /// <summary>
+        /// Occurs when a task has failed.
+        /// </summary>
+        event EventHandler<TaskCompletionEventArgs> TaskFailed;
+
+        /// <summary>
         /// Starts the execution of tasks.
         /// </summary>
         Task StartAsync();

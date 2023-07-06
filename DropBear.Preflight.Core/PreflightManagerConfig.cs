@@ -3,7 +3,7 @@
 /// <summary>
 /// Represents the configuration options for the PreflightManager.
 /// </summary>
-public class PreflightManagerConfig
+public abstract class PreflightManagerConfig
 {
     /// <summary>
     /// Gets or sets a value indicating whether the manager should stop executing tasks if a task fails.

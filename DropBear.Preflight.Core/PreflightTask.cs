@@ -5,6 +5,11 @@
 /// </summary>
 public abstract class PreflightTask
 {
+    protected PreflightTask(Exception failureException)
+    {
+        FailureException = failureException;
+    }
+
     /// <summary>
     ///  Gets or sets the name of the task.
     /// </summary>
