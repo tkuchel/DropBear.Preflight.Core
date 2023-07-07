@@ -1,8 +1,10 @@
 ﻿using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace DropBear.Preflight.Core;
+
 /// <summary>
-/// Manages the execution of preflight tasks.
+///     Manages the execution of preflight tasks.
 /// </summary>
 public class PreflightManager : IPreflightManager
 {
@@ -15,31 +17,31 @@ public class PreflightManager : IPreflightManager
     // A list of tasks to be executed
     private readonly List<PreflightTask> _tasks;
 
-    public PreflightManager(PreflightManagerConfig config, ILogger<PreflightManager> logger)
+    public PreflightManager(IOptions<PreflightManagerConfig> configOptions, ILogger<PreflightManager> logger)
     {
-        _config = config;
+        _config = configOptions.Value;
         _logger = logger;
         _tasks = new List<PreflightTask>();
     }
 
     /// <summary>
-    /// Occurs when a task has completed.
+    ///     Occurs when a task has completed.
     /// </summary>
     public event EventHandler<TaskCompletionEventArgs>? TaskCompleted;
 
     /// <summary>
-    /// Occurs when the overall progress has changed.
+    ///     Occurs when the overall progress has changed.
     /// </summary>
     public event EventHandler<ProgressEventArgs>? OverallProgress;
-    
+
     /// <summary>
-    /// Occurs when a task has failed.
+    ///     Occurs when a task has failed.
     /// </summary>
     public event EventHandler<TaskCompletionEventArgs>? TaskFailed;
 
-    
+
     /// <summary>
-    /// Adds a task to the list of tasks to be executed.
+    ///     Adds a task to the list of tasks to be executed.
     /// </summary>
     public void AddTask(PreflightTask task)
     {
@@ -47,7 +49,7 @@ public class PreflightManager : IPreflightManager
     }
 
     /// <summary>
-    /// Starts the execution of tasks.
+    ///     Starts the execution of tasks.
     /// </summary>
     public async Task StartAsync()
     {
@@ -69,7 +71,7 @@ public class PreflightManager : IPreflightManager
     }
 
     /// <summary>
-    /// Executes a task and its dependencies.
+    ///     Executes a task and its dependencies.
     /// </summary>
     private async Task ExecuteTaskWithDependenciesAsync(PreflightTask task, HashSet<PreflightTask> executingTasks)
     {
@@ -115,10 +117,7 @@ public class PreflightManager : IPreflightManager
                 TaskFailed?.Invoke(this, new TaskCompletionEventArgs(task, false, ex));
 
                 // Handle task failure based on the configuration
-                if (_config.StopOnFailure)
-                {
-                    throw;
-                }
+                if (_config.StopOnFailure) throw;
             }
 
         // Calculate the overall progress and raise the OverallProgress event
@@ -129,4 +128,3 @@ public class PreflightManager : IPreflightManager
         executingTasks.Remove(task);
     }
 }
-
