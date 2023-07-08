@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
-    <Version>0.0.6</Version>
+    <Version>0.0.7</Version>
     <Title>DropBear Preflight Manager</Title>
     <Description>A simple preflight manager, that can be given tasks to complete on startup.</Description>
     <Copyright>Terrence Kuchel (DropBear) 2023</Copyright>
