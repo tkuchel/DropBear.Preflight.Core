@@ -18,9 +18,9 @@ public class TaskCompletionEventArgs : EventArgs
     /// <summary>
     /// Gets the exception that was thrown, if any.
     /// </summary>
-    public Exception Error { get; }
+    public Exception? Error { get; }
 
-    public TaskCompletionEventArgs(PreflightTask task, bool isSuccessful, Exception error)
+    public TaskCompletionEventArgs(PreflightTask task, bool isSuccessful, Exception? error)
     {
         Task = task;
         IsSuccessful = isSuccessful;
