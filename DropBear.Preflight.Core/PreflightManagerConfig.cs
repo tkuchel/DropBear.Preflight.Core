@@ -20,4 +20,14 @@ public class PreflightManagerConfig
     ///     Gets or sets the number of times to retry a task if it fails.
     /// </summary>
     public int RetryCount { get; set; } = 0;
+    
+    /// <summary>
+    ///   Gets or sets a value indicating whether logging is enabled.
+    /// </summary>
+    public bool EnableDebugLogging { get; set; } = false;
+    
+    /// <summary>
+    ///  Gets or sets a value indicating whether error logging is enabled.
+    /// </summary>
+    public bool EnableErrorLogging { get; set; } = true;
 }

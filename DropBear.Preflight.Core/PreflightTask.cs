@@ -73,6 +73,7 @@ public abstract class PreflightTask
         lock (_lock)
         {
             _hasFailed = true;
+            _isCompleted = true;
             FailureException = ex;
         }
     }

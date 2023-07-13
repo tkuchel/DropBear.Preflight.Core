@@ -59,7 +59,7 @@ public class PreflightManager : IPreflightManager
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error executing task {TaskName}", task.Name);
+                if (_config.EnableErrorLogging) _logger.LogError(ex, "Error executing task {TaskName}", task.Name);
                 if (_config.StopOnFailure) throw;
             }
     }
@@ -76,7 +76,8 @@ public class PreflightManager : IPreflightManager
     {
         if (!executingTasks.Add(task))
         {
-            _logger.LogError("Circular dependency detected for task {TaskName}", task.Name);
+            if (_config.EnableErrorLogging)
+                _logger.LogError("Circular dependency detected for task {TaskName}", task.Name);
             throw new InvalidOperationException($"Circular dependency detected for task {task.Name}");
         }
 
@@ -86,25 +87,26 @@ public class PreflightManager : IPreflightManager
         if (!task.IsCompleted)
             try
             {
-                _logger.LogInformation("Starting task {TaskName}", task.Name);
+                if (_config.EnableDebugLogging) _logger.LogInformation("Starting task {TaskName}", task.Name);
 
                 using (var cts = new CancellationTokenSource(_config.TaskTimeout))
                 {
                     await task.ExecuteAsync(cts.Token);
                 }
 
-                _logger.LogInformation("Completed task {TaskName}", task.Name);
+                if (_config.EnableDebugLogging) _logger.LogInformation("Completed task {TaskName}", task.Name);
 
-                TaskCompleted?.Invoke(this, new TaskCompletionEventArgs(task, true, null));
+                TaskCompleted?.Invoke(this, new TaskCompletionEventArgs(task, task.IsCompleted, null));
             }
             catch (Exception? ex)
             {
-                _logger.LogError(ex, "Error executing task {TaskName}", task.Name);
+                if (_config.EnableErrorLogging) _logger.LogError(ex, "Error executing task {TaskName}", task.Name);
 
                 if (remainingRetries > 0)
                 {
-                    _logger.LogInformation("Retrying task {TaskName} ({RemainingRetries} retries left)", task.Name,
-                        remainingRetries);
+                    if (_config.EnableDebugLogging)
+                        _logger.LogInformation("Retrying task {TaskName} ({RemainingRetries} retries left)", task.Name,
+                            remainingRetries);
                     await ExecuteTaskWithRetriesAndDependenciesAsync(task, executingTasks, remainingRetries - 1);
                 }
                 else

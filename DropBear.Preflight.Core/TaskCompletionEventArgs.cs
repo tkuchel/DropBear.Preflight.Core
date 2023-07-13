@@ -16,7 +16,7 @@ public class TaskCompletionEventArgs : EventArgs
     public bool IsSuccessful { get; }
 
     /// <summary>
-    /// Gets the exception that was thrown, if any.
+    /// Gets the exception that was thrown, if any. This is any error not caught in the task itself.
     /// </summary>
     public Exception? Error { get; }
 
