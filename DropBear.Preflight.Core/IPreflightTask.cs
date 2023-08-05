@@ -9,6 +9,11 @@ public interface IPreflightTask
     ///     Gets or sets the name of the task.
     /// </summary>
     string Name { get; set; }
+    
+    /// <summary>
+    ///   Gets or sets the description of the task.
+    /// </summary>
+    string Description { get; set; }
 
     /// <summary>
     ///     Gets or sets the priority of the task.
